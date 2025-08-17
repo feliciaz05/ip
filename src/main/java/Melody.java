@@ -9,9 +9,13 @@
     }
 }*/
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Melody {
+
+    private static ArrayList<String> tasks = new ArrayList<>();
 
     public static void main(String[] args) {
         String logo = " __  __      _           _       \n"
@@ -33,13 +37,28 @@ public class Melody {
                 System.out.println("  " + exitLine);
                 System.out.println("______");
                 break;
+            } else if (input.equals("list")) {
+                listTasks();
+            } else {
+                addTask(input);
             }
 
-            System.out.println("  " + input);
-            System.out.println("______");
         }
 
         scanner.close();
 
+    }
+
+    private static void addTask(String task) {
+        tasks.add(task);
+        System.out.println("  added: " + task);
+        System.out.println("______");
+    }
+
+    private static void listTasks() {
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + ". " + tasks.get(i));
+        }
+        System.out.println("______");
     }
 }
