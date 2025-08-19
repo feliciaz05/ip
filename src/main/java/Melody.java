@@ -23,16 +23,114 @@ public class Melody {
                 + "| |  | |  __/ | (_) | (_| | |_| |\n"
                 + "|_|  |_|\\___|_|\\___/ \\__,_|\\__, |\n"
                 + "                          |___/ \n";
-        String exitLine = "Toodles! See you next time~";
+        //String exitLine = "Toodles! See you next time~";
         System.out.println("Hello! I'm\n" + logo + "\n" + "What can I do for you?\n" + " ______");
 
         Scanner scanner = new Scanner(System.in);
         String input;
 
         while (true) {
-            input = scanner.nextLine();
 
-            if (input.equals("bye")) {
+            try {
+                input = scanner.nextLine();
+                handleCommand(input);
+
+            } catch (MelodyException e) {
+                System.out.println(e.getMessage());
+                System.out.println("_____");
+            } catch (Exception e) {
+                System.out.println("  ☹ Oops! Something went wrong: " + e.getMessage());
+                System.out.println("_____");
+            }
+        }
+    }
+
+    private static void handleCommand(String input) throws MelodyException {
+        if (input.equals("bye")) {
+            System.out.println("  " + "Toodles! See you next time~");
+            System.out.println("______");
+            System.exit(0);
+        } else if (input.equals("list")) {
+            listTasks();
+        } else if (input.startsWith("unmark ")) {
+            handleMarkCommand(input, false);
+        } else if (input.startsWith("mark ")) {
+            handleMarkCommand(input, true);
+        } else if (input.startsWith("deadline")) {
+            handleDeadline(input);
+        } else if (input.startsWith("todo")) {
+            handleTodo(input);
+        } else if (input.startsWith("event")) {
+            handleEvent(input);
+        } else {
+            throw new MelodyException("I don't understand that command. Try: todo, deadline, event, list, mark, unmark, or bye!");
+        }
+    }
+
+    private static void handleMarkCommand(String input, boolean isDone) throws MelodyException {
+        try {
+            String numberStr = input.split(" ")[1];
+            int taskNumber = Integer.parseInt(numberStr);
+            markTask(taskNumber, isDone);
+        } catch (Exception e) {
+            throw new MelodyException("Please enter a valid task number after '" + (isDone ? "mark" : "unmark") + "'");
+        }
+    }
+
+    private static void handleDeadline(String input) throws MelodyException {
+        try {
+            if (input.equals("deadline")) {
+                throw new MelodyException("A deadline needs both a description and time. Try: 'deadline <task> /by <time>'");
+            }
+            int byIndex = input.indexOf(" /by ");
+            if (byIndex == -1) {
+                throw new MelodyException("Missing '/by' in deadline. Try: 'deadline <task> /by <time>'");
+            }
+            String ddl = input.substring(byIndex + 5).trim();
+            String desc = input.substring(9, byIndex).trim();
+            if (desc.isEmpty()) {
+                throw new MelodyException("The description of a deadline cannot be empty");
+            }
+            addDeadline(desc, ddl);
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new MelodyException("Invalid deadline format. Try: 'deadline <task> /by <time>'");
+        }
+    }
+
+    private static void handleTodo(String input) throws MelodyException {
+        if (input.equals("todo")) {
+            throw new MelodyException("The description of a todo cannot be empty. Try: 'todo <task>'");
+        }
+        String desc = input.substring(5).trim();
+        if (desc.isEmpty()) {
+            throw new MelodyException("The description of a todo cannot be empty");
+        }
+        addTodo(desc);
+    }
+
+    private static void handleEvent(String input) throws MelodyException {
+        try {
+            if (input.equals("event")) {
+                throw new MelodyException("An event needs description, start and end times. Try: 'event <task> /from <start> /to <end>'");
+            }
+            int fromIndex = input.indexOf(" /from ");
+            int toIndex = input.indexOf(" /to ");
+            if (fromIndex == -1 || toIndex == -1) {
+                throw new MelodyException("Missing '/from' or '/to' in event. Try: 'event <task> /from <start> /to <end>'");
+            }
+            String fromTime = input.substring(fromIndex + 7, toIndex).trim();
+            String toTime = input.substring(toIndex + 5).trim();
+            String desc = input.substring(6, fromIndex).trim();
+            if (desc.isEmpty()) {
+                throw new MelodyException("The description of an event cannot be empty");
+            }
+            addEvent(desc, fromTime, toTime);
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new MelodyException("Invalid event format. Try: 'event <task> /from <start> /to <end>'");
+        }
+    }
+
+            /*if (input.equals("bye")) {
                 System.out.println("  " + exitLine);
                 System.out.println("______");
                 break;
@@ -67,7 +165,7 @@ public class Melody {
 
         scanner.close();
 
-    }
+    }*/
 
     private static void addTask(String desc) {
         Task newTask = new Task(desc);
