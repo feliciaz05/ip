@@ -10,7 +10,6 @@
 }*/
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Melody {
@@ -45,6 +44,21 @@ public class Melody {
             } else if (input.contains("mark ")) {
                 int taskNumber = Integer.parseInt(input.substring(5).trim());
                 markTask(taskNumber, true); //whatever is at position 5 is the task no.
+            } else if (input.contains("deadline")) {
+                int byIndex = input.indexOf(" /by ");
+                String ddl = input.substring(byIndex + 4); //gets Sunday
+                String desc = input.substring(9, byIndex).trim();
+                addDeadline(desc, ddl);
+            } else if (input.contains("todo ")) {
+                String desc = input.substring(5);
+                addTodo(desc);
+            } else if (input.contains("event ")) {
+                int fromIndex = input.indexOf(" /from ");
+                int toIndex = input.indexOf(" /to ");
+                String fromTime = input.substring((fromIndex + 6), toIndex);
+                String toTime = input.substring(toIndex + 4);
+                String desc = input.substring(6, fromIndex).trim();
+                addEvent(desc, fromTime, toTime);
             } else {
                 addTask(input);
             }
@@ -66,7 +80,7 @@ public class Melody {
         System.out.println("Here are the tasks in your list: \n");
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
-            System.out.println((i + 1) + ". [" + task.getStatusIcon() + "] " + task.description);
+            System.out.println((i + 1) + ". [" + task.getType() + "] " + "[" + task.getStatusIcon() + "] " + task.description);
         }
         System.out.println("______");
     }
@@ -79,20 +93,34 @@ public class Melody {
         System.out.println("______");
     }
 
-    public static class Task {
-        protected String description;
-        protected boolean isDone;
+    private static void addDeadline(String description, String date) {
+        Deadline newDeadline = new Deadline(description, date);
+        tasks.add(newDeadline);
+        System.out.println("Got it! I've added this task: ");
+        System.out.println("[D] [ ] " + description + " (by:" + date + ")");
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        System.out.println("______");
 
-        public Task(String description) {
-            this.description = description;
-            this.isDone = false;
-        }
+    }
 
-        public String getStatusIcon() {
-            return (isDone ? "X" : " "); // mark done task with X
-        }
+    private static void addTodo(String description) {
+        Todo newTodo = new Todo(description);
+        tasks.add(newTodo);
+        System.out.println("Got it! I've added this task: ");
+        System.out.println("[T] [ ] " + description);
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        System.out.println("______");
 
-            //...
+    }
+
+    private static void addEvent(String description, String from, String to) {
+        Event newEvent = new Event(description, from, to);
+        tasks.add(newEvent);
+        System.out.println("Got it! I've added this task: ");
+        System.out.println("[E] [ ] " + description + " (from:" + from + " to:" + to + ")");
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        System.out.println("______");
+
     }
 
 }
