@@ -37,10 +37,10 @@ public class Melody {
 
             } catch (MelodyException e) {
                 System.out.println(e.getMessage());
-                System.out.println("_____");
+                System.out.println("______");
             } catch (Exception e) {
                 System.out.println("  ☹ Oops! Something went wrong: " + e.getMessage());
-                System.out.println("_____");
+                System.out.println("______");
             }
         }
     }
@@ -91,7 +91,7 @@ public class Melody {
             String ddl = input.substring(byIndex + 5).trim();
             String desc = input.substring(9, byIndex).trim();
             if (desc.isEmpty()) {
-                throw new MelodyException("The description of a deadline cannot be empty");
+                throw new MelodyException("The description of a deadline cannot be empty.f");
             }
             addDeadline(desc, ddl);
         } catch (StringIndexOutOfBoundsException e) {
@@ -100,12 +100,9 @@ public class Melody {
     }
 
     private static void handleTodo(String input) throws MelodyException {
-        if (input.equals("todo")) {
-            throw new MelodyException("The description of a todo cannot be empty. Try: 'todo <task>'");
-        }
         String desc = input.substring(5).trim();
         if (desc.isEmpty()) {
-            throw new MelodyException("The description of a todo cannot be empty");
+            throw new MelodyException("The description of a todo cannot be empty. Try: 'todo <task>'");
         }
         addTodo(desc);
     }
@@ -148,6 +145,7 @@ public class Melody {
             System.out.println("    " + removedTask.toString());
 
             System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
+            System.out.println("______");
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new MelodyException("Please specify a task number to delete.");
         } catch (NumberFormatException e) {
@@ -155,18 +153,11 @@ public class Melody {
         }
     }
 
-    private static void addTask(String desc) {
-        Task newTask = new Task(desc);
-        tasks.add(newTask);
-        System.out.println("  added: " + desc);
-        System.out.println("______");
-    }
-
     private static void listTasks() {
-        System.out.println("Here are the tasks in your list: \n");
+        System.out.println("  Here are the tasks in your list: \n");
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
-            System.out.println((i + 1) + ". [" + task.getType() + "] " + "[" + task.getStatusIcon() + "] " + task.description);
+            System.out.println((i + 1) + ". " + task.toString());
         }
         System.out.println("______");
     }
@@ -182,9 +173,9 @@ public class Melody {
     private static void addDeadline(String description, String date) {
         Deadline newDeadline = new Deadline(description, date);
         tasks.add(newDeadline);
-        System.out.println("Got it! I've added this task: ");
-        System.out.println(newDeadline.toString());
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        System.out.println("  Got it! I've added this task: ");
+        System.out.println("    " + newDeadline.toString());
+        System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("______");
 
     }
@@ -192,9 +183,9 @@ public class Melody {
     private static void addTodo(String description) {
         Todo newTodo = new Todo(description);
         tasks.add(newTodo);
-        System.out.println("Got it! I've added this task: ");
-        System.out.println(newTodo.toString());
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        System.out.println("  Got it! I've added this task: ");
+        System.out.println("    " + newTodo.toString());
+        System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("______");
 
     }
@@ -202,9 +193,9 @@ public class Melody {
     private static void addEvent(String description, String from, String to) {
         Event newEvent = new Event(description, from, to);
         tasks.add(newEvent);
-        System.out.println("Got it! I've added this task: ");
-        System.out.println(newEvent.toString());
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        System.out.println("  Got it! I've added this task: ");
+        System.out.println("    " + newEvent.toString());
+        System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("______");
 
     }
