@@ -56,14 +56,16 @@ public class Melody {
             handleMarkCommand(input, false);
         } else if (input.startsWith("mark ")) {
             handleMarkCommand(input, true);
-        } else if (input.startsWith("deadline")) {
+        } else if (input.startsWith("deadline ")) {
             handleDeadline(input);
-        } else if (input.startsWith("todo")) {
+        } else if (input.startsWith("todo ")) {
             handleTodo(input);
-        } else if (input.startsWith("event")) {
+        } else if (input.startsWith("event ")) {
             handleEvent(input);
+        } else if (input.startsWith("delete ")) {
+            handleDeleteCommand(input);
         } else {
-            throw new MelodyException("I don't understand that command. Try: todo, deadline, event, list, mark, unmark, or bye!");
+            throw new MelodyException("I don't understand that command. Try: todo, deadline, event, list, mark, unmark, delete, or bye!");
         }
     }
 
@@ -130,42 +132,28 @@ public class Melody {
         }
     }
 
-            /*if (input.equals("bye")) {
-                System.out.println("  " + exitLine);
-                System.out.println("______");
-                break;
-            } else if (input.equals("list")) {
-                listTasks();
-            } else if (input.contains("unmark ")) {
-                int taskNumber = Integer.parseInt(input.substring(7).trim());
-                markTask(taskNumber, false);
-            } else if (input.contains("mark ")) {
-                int taskNumber = Integer.parseInt(input.substring(5).trim());
-                markTask(taskNumber, true); //whatever is at position 5 is the task no.
-            } else if (input.contains("deadline")) {
-                int byIndex = input.indexOf(" /by ");
-                String ddl = input.substring(byIndex + 4); //gets Sunday
-                String desc = input.substring(9, byIndex).trim();
-                addDeadline(desc, ddl);
-            } else if (input.contains("todo ")) {
-                String desc = input.substring(5);
-                addTodo(desc);
-            } else if (input.contains("event ")) {
-                int fromIndex = input.indexOf(" /from ");
-                int toIndex = input.indexOf(" /to ");
-                String fromTime = input.substring((fromIndex + 6), toIndex);
-                String toTime = input.substring(toIndex + 4);
-                String desc = input.substring(6, fromIndex).trim();
-                addEvent(desc, fromTime, toTime);
-            } else {
-                addTask(input);
+    private static void handleDeleteCommand(String input) throws MelodyException {
+        try {
+            String numberStr = input.split(" ")[1];
+            int taskNumber = Integer.parseInt(numberStr);
+
+            if (taskNumber < 1 || taskNumber > tasks.size()) {
+                throw new MelodyException("Task number " + taskNumber + " doesn't exist.");
             }
+            //Task toBeRemoved = tasks.get(taskNumber - 1);
+            Task removedTask = tasks.remove(taskNumber - 1);
+            System.out.println("  Noted. I've removed this task:");
 
+            // This will now use the proper toString() format
+            System.out.println("    " + removedTask.toString());
+
+            System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new MelodyException("Please specify a task number to delete.");
+        } catch (NumberFormatException e) {
+            throw new MelodyException("Please enter a valid task number.");
         }
-
-        scanner.close();
-
-    }*/
+    }
 
     private static void addTask(String desc) {
         Task newTask = new Task(desc);
@@ -195,7 +183,7 @@ public class Melody {
         Deadline newDeadline = new Deadline(description, date);
         tasks.add(newDeadline);
         System.out.println("Got it! I've added this task: ");
-        System.out.println("[D] [ ] " + description + " (by:" + date + ")");
+        System.out.println(newDeadline.toString());
         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("______");
 
@@ -205,7 +193,7 @@ public class Melody {
         Todo newTodo = new Todo(description);
         tasks.add(newTodo);
         System.out.println("Got it! I've added this task: ");
-        System.out.println("[T] [ ] " + description);
+        System.out.println(newTodo.toString());
         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("______");
 
@@ -215,7 +203,7 @@ public class Melody {
         Event newEvent = new Event(description, from, to);
         tasks.add(newEvent);
         System.out.println("Got it! I've added this task: ");
-        System.out.println("[E] [ ] " + description + " (from:" + from + " to:" + to + ")");
+        System.out.println(newEvent.toString());
         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("______");
 
