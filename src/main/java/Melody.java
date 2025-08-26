@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Melody {
 
-    private static ArrayList<Task> tasks = new ArrayList<>();
+    private static TaskList tasks = new TaskList();
     private static Storage storage = new Storage("./data/Melody.txt");
 
     public static void main(String[] args) {
@@ -27,11 +27,12 @@ public class Melody {
         System.out.println("Hello! I'm\n" + logo + "\n" + "What can I do for you?\n" + " ______");
 
         try {
-            tasks = storage.loadTasks();
+            ArrayList<Task> loadedTasks = storage.loadTasks();
+            tasks = new TaskList(loadedTasks);
             System.out.println("Loaded " + tasks.size() + " tasks from storage.");
         } catch (Exception e) {
             System.out.println("No existing data found or error loading data. Starting with empty task list.");
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
         }
 
         Scanner scanner = new Scanner(System.in);
@@ -142,11 +143,7 @@ public class Melody {
             String numberStr = input.split(" ")[1];
             int taskNumber = Integer.parseInt(numberStr);
 
-            if (taskNumber < 1 || taskNumber > tasks.size()) {
-                throw new MelodyException("Task number " + taskNumber + " doesn't exist.");
-            }
-            //Task toBeRemoved = tasks.get(taskNumber - 1);
-            Task removedTask = tasks.remove(taskNumber - 1);
+            Task removedTask = tasks.removeTask(taskNumber);
             System.out.println("  Noted. I've removed this task:");
 
             // This will now use the proper toString() format
@@ -163,18 +160,14 @@ public class Melody {
     }
 
     private static void listTasks() {
-        System.out.println("  Here are the tasks in your list: \n");
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            System.out.println((i + 1) + ". " + task.toString());
-        }
-        System.out.println("______");
+        System.out.println(tasks.getTasksAsString());
     }
 
-    private static void markTask(int taskNumber, boolean isDone) {
+    private static void markTask(int taskNumber, boolean isDone) throws MelodyException {
+        System.out.println("DEBUG: Marking task " + taskNumber);
+        tasks.markTask(taskNumber, isDone);
+        Task task = tasks.getTask(taskNumber);
         System.out.println(isDone ? "  Okie! I've marked it as completed!" : "  Alright! It's unmarked!");
-        Task task = tasks.get(taskNumber - 1);
-        task.isDone = isDone;
         System.out.println("    [" + task.getStatusIcon() + "] " + task.description);
         System.out.println("______");
         saveTasksToFile();
@@ -182,7 +175,7 @@ public class Melody {
 
     private static void addDeadline(String description, String date) {
         Deadline newDeadline = new Deadline(description, date);
-        tasks.add(newDeadline);
+        tasks.addTask(newDeadline);
         System.out.println("  Got it! I've added this task: ");
         System.out.println("    " + newDeadline.toString());
         System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
@@ -193,7 +186,7 @@ public class Melody {
 
     private static void addTodo(String description) {
         Todo newTodo = new Todo(description);
-        tasks.add(newTodo);
+        tasks.addTask(newTodo);
         System.out.println("  Got it! I've added this task: ");
         System.out.println("    " + newTodo.toString());
         System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
@@ -204,7 +197,7 @@ public class Melody {
 
     private static void addEvent(String description, String from, String to) {
         Event newEvent = new Event(description, from, to);
-        tasks.add(newEvent);
+        tasks.addTask(newEvent);
         System.out.println("  Got it! I've added this task: ");
         System.out.println("    " + newEvent.toString());
         System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
@@ -215,7 +208,7 @@ public class Melody {
 
     private static void saveTasksToFile() {
         try {
-            storage.saveTasks(tasks);
+            storage.saveTasks(tasks.getTasks());
         } catch (Exception e) {
             System.out.println("  Warning: Could not save tasks to file: " + e.getMessage());
         }
