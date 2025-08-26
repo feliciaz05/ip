@@ -1,3 +1,6 @@
 T | 1 | readbook
-E | 0 | meeting | Monday 6pm-9pm
 D | 0 | proposal | tuesday
+D | 0 | eat dinner | 3pm
+D | 0 | trial | 27 08 2025
+D | 0 | trial2 | 27-08-2025
+E | 0 | trialagain | 28-09-2025 1800-29-09-2025

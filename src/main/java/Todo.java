@@ -9,7 +9,4 @@ public class Todo extends Task {
         return super.toString();
     }
 
-    public String toFileFormat() {
-        return "T | " + (isDone ? "1" : "0") + " | " + description;
-    }
 }

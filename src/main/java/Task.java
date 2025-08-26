@@ -13,14 +13,9 @@ public abstract class Task {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
-    public TaskType getType() {
-        return type;
-    }
-
     @Override
     public String toString() {
         return "[" + type.getCode() + "] " + "[" + getStatusIcon() + "] " + description;
     }
 
-    public abstract String toFileFormat();
 }
