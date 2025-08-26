@@ -21,5 +21,6 @@ public abstract class Task {
     public String toString() {
         return "[" + type.getCode() + "] " + "[" + getStatusIcon() + "] " + description;
     }
-    //...
+
+    public abstract String toFileFormat();
 }

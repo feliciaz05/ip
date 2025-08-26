@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class Melody {
 
     private static ArrayList<Task> tasks = new ArrayList<>();
+    private static Storage storage = new Storage("./data/Melody.txt");
 
     public static void main(String[] args) {
         String logo = " __  __      _           _       \n"
@@ -23,8 +24,15 @@ public class Melody {
                 + "| |  | |  __/ | (_) | (_| | |_| |\n"
                 + "|_|  |_|\\___|_|\\___/ \\__,_|\\__, |\n"
                 + "                          |___/ \n";
-        //String exitLine = "Toodles! See you next time~";
         System.out.println("Hello! I'm\n" + logo + "\n" + "What can I do for you?\n" + " ______");
+
+        try {
+            tasks = storage.loadTasks();
+            System.out.println("Loaded " + tasks.size() + " tasks from storage.");
+        } catch (Exception e) {
+            System.out.println("No existing data found or error loading data. Starting with empty task list.");
+            tasks = new ArrayList<>();
+        }
 
         Scanner scanner = new Scanner(System.in);
         String input;
@@ -146,6 +154,7 @@ public class Melody {
 
             System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
             System.out.println("______");
+            saveTasksToFile();
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new MelodyException("Please specify a task number to delete.");
         } catch (NumberFormatException e) {
@@ -168,6 +177,7 @@ public class Melody {
         task.isDone = isDone;
         System.out.println("    [" + task.getStatusIcon() + "] " + task.description);
         System.out.println("______");
+        saveTasksToFile();
     }
 
     private static void addDeadline(String description, String date) {
@@ -177,6 +187,7 @@ public class Melody {
         System.out.println("    " + newDeadline.toString());
         System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("______");
+        saveTasksToFile();
 
     }
 
@@ -187,6 +198,7 @@ public class Melody {
         System.out.println("    " + newTodo.toString());
         System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("______");
+        saveTasksToFile();
 
     }
 
@@ -197,7 +209,16 @@ public class Melody {
         System.out.println("    " + newEvent.toString());
         System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("______");
+        saveTasksToFile();
 
+    }
+
+    private static void saveTasksToFile() {
+        try {
+            storage.saveTasks(tasks);
+        } catch (Exception e) {
+            System.out.println("  Warning: Could not save tasks to file: " + e.getMessage());
+        }
     }
 
 }
