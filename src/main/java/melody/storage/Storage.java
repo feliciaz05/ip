@@ -1,8 +1,12 @@
+package melody.storage;
+
+import melody.task.Deadline;
+import melody.task.Event;
+import melody.task.Task;
+import melody.task.Todo;
+
 import java.io.File;
 import java.io.FileWriter;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -69,9 +73,9 @@ public class Storage {
     }
 
     /**
-     * Parses a line from the file and creates the corresponding Task object
+     * Parses a line from the file and creates the corresponding melody.task.Task object
      * @param line Line from the file in format: T|1|description or D|0|description|date or E|1|description|from|to
-     * @return Task object or null if line is invalid
+     * @return melody.task.Task object or null if line is invalid
      */
     private Task parseTaskFromLine(String line) {
         String[] parts = line.split("\\|");
@@ -117,8 +121,8 @@ public class Storage {
     }
 
     /**
-     * Converts a Task object to the file format string
-     * @param task Task to convert
+     * Converts a melody.task.Task object to the file format string
+     * @param task melody.task.Task to convert
      * @return String in format: T|1|description or D|0|description|date or E|1|description|from|to
      */
     private String convertTaskToFileFormat(Task task) {

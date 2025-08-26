@@ -1,3 +1,8 @@
+package melody.parser;
+
+import melody.command.CommandType;
+import melody.exception.MelodyException;
+
 public class Parser {
 
     /**

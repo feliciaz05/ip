@@ -1,4 +1,4 @@
-/*public class Duke {
+package melody;/*public class Duke {
     public static void main(String[] args) {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -9,13 +9,20 @@
     }
 }*/
 
+import melody.command.CommandType;
+import melody.exception.MelodyException;
+import melody.parser.Parser;
+import melody.storage.Storage;
+import melody.task.*;
+import melody.ui.Ui;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Melody {
 
     private static TaskList tasks = new TaskList();
-    private static Storage storage = new Storage("./data/Melody.txt");
+    private static Storage storage = new Storage("./data/melody.Melody.txt");
     private static Ui ui = new Ui();
 
     public static void main(String[] args) {
