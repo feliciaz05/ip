@@ -1,3 +1,5 @@
+package melody.command;
+
 /**
  * Enum representing the different command types.
  */
