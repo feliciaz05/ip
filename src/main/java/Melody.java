@@ -16,22 +16,18 @@ public class Melody {
 
     private static TaskList tasks = new TaskList();
     private static Storage storage = new Storage("./data/Melody.txt");
+    private static Ui ui = new Ui();
 
     public static void main(String[] args) {
-        String logo = " __  __      _           _       \n"
-                + "|  \\/  | ___| | ___   __| |_   _ \n"
-                + "| |\\/| |/ _ \\ |/ _ \\ / _` | | | |\n"
-                + "| |  | |  __/ | (_) | (_| | |_| |\n"
-                + "|_|  |_|\\___|_|\\___/ \\__,_|\\__, |\n"
-                + "                          |___/ \n";
-        System.out.println("Hello! I'm\n" + logo + "\n" + "What can I do for you?\n" + " ______");
+        ui.showWelcome();
 
         try {
             ArrayList<Task> loadedTasks = storage.loadTasks();
             tasks = new TaskList(loadedTasks);
-            System.out.println("Loaded " + tasks.size() + " tasks from storage.");
+            String wordy = tasks.size() == 1 ? " task" : " tasks" ;
+            ui.showMessage("Loaded " + tasks.size() + wordy + " from storage.");
         } catch (Exception e) {
-            System.out.println("No existing data found or error loading data. Starting with empty task list.");
+            ui.showLoadingError(e.getMessage());
             tasks = new TaskList();
         }
 
@@ -41,26 +37,24 @@ public class Melody {
         while (true) {
 
             try {
-                input = scanner.nextLine();
+                input = ui.readCommand();
                 handleCommand(input);
 
             } catch (MelodyException e) {
-                System.out.println(e.getMessage());
-                System.out.println("______");
+                ui.showError(e.getMessage());
             } catch (Exception e) {
-                System.out.println("  ☹ Oops! Something went wrong: " + e.getMessage());
-                System.out.println("______");
+                ui.showError("  ☹ Oops! Something went wrong: " + e.getMessage());
             }
         }
     }
 
     private static void handleCommand(String input) throws MelodyException {
         if (input.equals("bye")) {
-            System.out.println("  " + "Toodles! See you next time~");
-            System.out.println("______");
+            ui.showGoodbye();
+            ui.close();
             System.exit(0);
         } else if (input.equals("list")) {
-            listTasks();
+            ui.showTaskList(tasks.getTasksAsString());
         } else if (input.startsWith("unmark ")) {
             handleMarkCommand(input, false);
         } else if (input.startsWith("mark ")) {
@@ -144,13 +138,7 @@ public class Melody {
             int taskNumber = Integer.parseInt(numberStr);
 
             Task removedTask = tasks.removeTask(taskNumber);
-            System.out.println("  Noted. I've removed this task:");
-
-            // This will now use the proper toString() format
-            System.out.println("    " + removedTask.toString());
-
-            System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
-            System.out.println("______");
+            ui.showTaskRemoved(removedTask, tasks.size());
             saveTasksToFile();
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new MelodyException("Please specify a task number to delete.");
@@ -164,22 +152,16 @@ public class Melody {
     }
 
     private static void markTask(int taskNumber, boolean isDone) throws MelodyException {
-        System.out.println("DEBUG: Marking task " + taskNumber);
         tasks.markTask(taskNumber, isDone);
         Task task = tasks.getTask(taskNumber);
-        System.out.println(isDone ? "  Okie! I've marked it as completed!" : "  Alright! It's unmarked!");
-        System.out.println("    [" + task.getStatusIcon() + "] " + task.description);
-        System.out.println("______");
+        ui.showTaskMarked(task, isDone);
         saveTasksToFile();
     }
 
     private static void addDeadline(String description, String date) {
         Deadline newDeadline = new Deadline(description, date);
         tasks.addTask(newDeadline);
-        System.out.println("  Got it! I've added this task: ");
-        System.out.println("    " + newDeadline.toString());
-        System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
-        System.out.println("______");
+        ui.showTaskAdded(newDeadline, tasks.size());
         saveTasksToFile();
 
     }
@@ -187,10 +169,7 @@ public class Melody {
     private static void addTodo(String description) {
         Todo newTodo = new Todo(description);
         tasks.addTask(newTodo);
-        System.out.println("  Got it! I've added this task: ");
-        System.out.println("    " + newTodo.toString());
-        System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
-        System.out.println("______");
+        ui.showTaskAdded(newTodo, tasks.size());
         saveTasksToFile();
 
     }
@@ -198,10 +177,7 @@ public class Melody {
     private static void addEvent(String description, String from, String to) {
         Event newEvent = new Event(description, from, to);
         tasks.addTask(newEvent);
-        System.out.println("  Got it! I've added this task: ");
-        System.out.println("    " + newEvent.toString());
-        System.out.println("  Now you have " + tasks.size() + " tasks in the list.");
-        System.out.println("______");
+        ui.showTaskAdded(newEvent, tasks.size());
         saveTasksToFile();
 
     }
