@@ -1,3 +1,7 @@
+package melody.task;
+
+import melody.exception.MelodyException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +12,14 @@ public class TaskList {
     private ArrayList<Task> tasks;
 
     /**
-     * Constructs an empty TaskList.
+     * Constructs an empty melody.task.TaskList.
      */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
     /**
-     * Constructs a TaskList with existing tasks.
+     * Constructs a melody.task.TaskList with existing tasks.
      *
      * @param tasks the initial list of tasks
      */
@@ -41,7 +45,7 @@ public class TaskList {
      */
     public Task removeTask(int index) throws MelodyException {
         if (index < 1 || index > tasks.size()) {
-            throw new MelodyException("Task number " + index + " doesn't exist.");
+            throw new MelodyException("melody.task.Task number " + index + " doesn't exist.");
         }
         return tasks.remove(index - 1);
     }
@@ -55,7 +59,7 @@ public class TaskList {
      */
     public void markTask(int index, boolean isDone) throws MelodyException {
         if (index < 1 || index > tasks.size()) {
-            throw new MelodyException("Task number " + index + " doesn't exist.");
+            throw new MelodyException("melody.task.Task number " + index + " doesn't exist.");
         }
         Task task = tasks.get(index - 1);
         task.isDone = isDone;
@@ -70,7 +74,7 @@ public class TaskList {
      */
     public Task getTask(int index) throws MelodyException {
         if (index < 1 || index > tasks.size()) {
-            throw new MelodyException("Task number " + index + " doesn't exist.");
+            throw new MelodyException("melody.task.Task number " + index + " doesn't exist.");
         }
         return tasks.get(index - 1);
     }

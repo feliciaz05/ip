@@ -1,7 +1,11 @@
+package melody.ui;
+
+import melody.task.Task;
+
 import java.util.Scanner;
 
 /**
- * Handles all user interface interactions for the Melody chatbot.
+ * Handles all user interface interactions for the melody.Melody chatbot.
  */
 public class Ui {
     private Scanner scanner;
@@ -11,7 +15,7 @@ public class Ui {
     }
 
     /**
-     * Displays the welcome message with Melody's logo.
+     * Displays the welcome message with melody.Melody's logo.
      */
     public void showWelcome() {
         String logo = " __  __      _           _       \n"
