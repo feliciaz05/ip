@@ -2,6 +2,7 @@ package melody.ui;
 
 import melody.task.Task;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -135,20 +136,15 @@ public class Ui {
         showDivider();
     }
 
-    /**
-     * Displays a save error message.
-     * @param errorMessage the error message
-     */
-    public void showSaveError(String errorMessage) {
-        showMessage("  Warning: Could not save tasks to file: " + errorMessage);
-    }
-
-    /**
-     * Closes the scanner resource.
-     */
-    public void close() {
-        if (scanner != null) {
-            scanner.close();
+    public void showTasksFound(ArrayList<Task> tasksFound) {
+        if (tasksFound.isEmpty()) {
+            showMessage("  You have no matching tasks!");
+        } else {
+            showMessage("Here are the matching tasks in your list:");
+            for (int i = 0; i < tasksFound.size(); i++) {
+                showMessage((i + 1) + "." + tasksFound.get(i));
+            }
+            showDivider();
         }
     }
 }
