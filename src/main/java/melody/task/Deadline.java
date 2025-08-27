@@ -17,6 +17,10 @@ public class Deadline extends Task {
         this.byDateTime = parseDateTime(by);
     }
 
+    public String getBy() {
+        return by;
+    }
+
     private LocalDateTime parseDateTime(String dateTimeString) {
         String[] formats = {
                 "yyyy-MM-dd HHmm",    // 2019-12-01 1800 (most specific)

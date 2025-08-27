@@ -1,6 +1,5 @@
 package melody.task;
 
-// melody.task.TaskType.java
 public enum TaskType {
     TODO("T", "To-do task"),
     DEADLINE("D", "melody.task.Task with deadline"),

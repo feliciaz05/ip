@@ -1,9 +1,9 @@
 package melody.task;
 
 public abstract class Task {
-    protected String description;
-    protected boolean isDone;
-    protected TaskType type;
+    private String description;
+    private boolean isDone;
+    private TaskType type;
 
     public Task(String description, TaskType type) {
         this.description = description;
@@ -13,6 +13,18 @@ public abstract class Task {
 
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
+    }
+
+    public void setDone(boolean isDone) {
+        this.isDone = isDone;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override

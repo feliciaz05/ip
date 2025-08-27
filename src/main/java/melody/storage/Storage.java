@@ -115,7 +115,7 @@ public class Storage {
         }
 
         if (task != null) {
-            task.isDone = isDone;
+            task.setDone(isDone);
         }
         return task;
     }
@@ -126,16 +126,16 @@ public class Storage {
      * @return String in format: T|1|description or D|0|description|date or E|1|description|from|to
      */
     private String convertTaskToFileFormat(Task task) {
-        String doneStatus = task.isDone ? "1" : "0";
+        String doneStatus = task.isDone() ? "1" : "0";
 
         if (task instanceof Todo) {
-            return "T | " + doneStatus + " | " + task.description;
+            return "T | " + doneStatus + " | " + task.getDescription();
         } else if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return "D | " + doneStatus + " | " + task.description + " | " + deadline.by;
+            return "D | " + doneStatus + " | " + task.getDescription() + " | " + deadline.getBy();
         } else if (task instanceof Event) {
             Event event = (Event) task;
-            return "E | " + doneStatus + " | " + task.description + " | " + event.startTime + "-" + event.endTime;
+            return "E | " + doneStatus + " | " + task.getDescription() + " | " + event.getStartTime() + "-" + event.getEndTime();
         }
 
         return ""; // Should not reach here

@@ -21,6 +21,14 @@ public class Event extends Task {
         this.toDateTime = parseDateTime(endTime);
     }
 
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
     private LocalDateTime parseDateTime(String dateTimeString) {
         String[] formats = {
                 "yyyy-MM-dd HH:mm",      // 2019-12-01 18:00
