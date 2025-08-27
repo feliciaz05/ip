@@ -23,13 +23,17 @@ public abstract class Task {
         return isDone;
     }
 
+    public TaskType getType() {
+        return this.type;
+    }
+
     public String getDescription() {
         return description;
     }
 
     @Override
     public String toString() {
-        return "[" + type.getCode() + "] " + "[" + getStatusIcon() + "] " + description;
+        return "[" + type.getCode() + "]" + "[" + getStatusIcon() + "] " + description;
     }
 
 }
