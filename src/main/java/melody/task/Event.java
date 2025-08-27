@@ -6,6 +6,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents an event that inherits from task, with a start time, end time and description.
+ * Provides methods to format due date/time, and getters.
+ */
+
 public class Event extends Task {
 
     protected String startTime;
