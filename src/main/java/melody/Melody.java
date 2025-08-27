@@ -57,7 +57,6 @@ public class Melody {
         switch (commandType) {
             case BYE:
                 ui.showGoodbye();
-                ui.close();
                 System.exit(0);
                 break;
 
@@ -88,6 +87,11 @@ public class Melody {
             case EVENT:
                 String[] eventParts = Parser.parseEvent(input);
                 addEvent(eventParts[0], eventParts[1], eventParts[2]);
+                break;
+
+            case FIND:
+                String keyword = Parser.parseFind(input);
+                findTasks(keyword);
                 break;
 
             case DELETE:
@@ -136,6 +140,11 @@ public class Melody {
         } catch (Exception e) {
             System.out.println("  Warning: Could not save tasks to file: " + e.getMessage());
         }
+    }
+
+    private static void findTasks(String keyword) {
+        ArrayList<Task> tasksFound = tasks.findTasks(keyword);
+        ui.showTasksFound(tasksFound);
     }
 
 }

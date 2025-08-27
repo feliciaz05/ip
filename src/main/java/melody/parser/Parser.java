@@ -29,6 +29,8 @@ public class Parser {
             return CommandType.EVENT;
         } else if (input.startsWith("delete ")) {
             return CommandType.DELETE;
+        } else if (input.startsWith("find ")) {
+            return CommandType.FIND;
         } else {
             throw new MelodyException("I don't understand that command. Try: todo, deadline, event, list, mark, unmark, delete, or bye!");
         }
@@ -143,6 +145,13 @@ public class Parser {
         } catch (StringIndexOutOfBoundsException e) {
             throw new MelodyException("Invalid event format. Try: 'event <task> /from <start> /to <end>'");
         }
+    }
+
+    public static String parseFind(String input) throws MelodyException {
+        if (input.length() <= 5) { // "find ".length() = 5
+            throw new MelodyException("Please provide a keyword to search for.");
+        }
+        return input.substring(5).trim();
     }
 
 }
