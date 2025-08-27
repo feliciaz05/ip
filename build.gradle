@@ -34,8 +34,15 @@ application {
 shadowJar {
     archiveBaseName = "melody"
     archiveClassifier = null
+    archiveFileName = "melody.jar"
 }
 
 run{
     standardInput = System.in
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'melody.Melody'
+    }
 }
