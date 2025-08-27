@@ -118,7 +118,7 @@ public class Ui {
      */
     public void showTaskMarked(Task task, boolean isDone) {
         showMessage(isDone ? "  Okie! I've marked it as completed!" : "Alright! It's unmarked!");
-        showMessage("  [" + task.getStatusIcon() + "] " + task.description);
+        showMessage("  [" + task.getStatusIcon() + "] " + task.getDescription());
         showDivider();
     }
 

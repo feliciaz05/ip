@@ -62,7 +62,7 @@ public class TaskList {
             throw new MelodyException("melody.task.Task number " + index + " doesn't exist.");
         }
         Task task = tasks.get(index - 1);
-        task.isDone = isDone;
+        task.setDone(isDone);
     }
 
     /**
