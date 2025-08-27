@@ -6,6 +6,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents a deadline that inherits from task, with a due date/time and description.
+ * Provides methods to format due date/time.
+ */
+
 public class Deadline extends Task {
 
     protected String by;

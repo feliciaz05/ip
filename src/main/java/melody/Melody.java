@@ -10,6 +10,11 @@ import melody.ui.Ui;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Main class
+ * Provides methods
+ */
+
 public class Melody {
 
     private static TaskList tasks = new TaskList();
