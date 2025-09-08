@@ -16,6 +16,8 @@ public class TaskList {
      */
     public TaskList() {
         this.tasks = new ArrayList<>();
+        assert this.tasks != null : "Tasks list should not be null";
+        assert this.tasks.isEmpty() : "New task list should be empty";
     }
 
     /**
@@ -25,6 +27,8 @@ public class TaskList {
      */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
+        assert this.tasks != null : "Tasks list should not be null";
+        assert this.tasks.size() == tasks.size() : "Task list size should match input";
     }
 
     /**
@@ -34,6 +38,8 @@ public class TaskList {
      */
     public void addTask(Task task) {
         tasks.add(task);
+        assert tasks.contains(task) : "Task should be added to the list";
+        assert tasks.get(tasks.size() - 1) == task : "Task should be at the end of the list";
     }
 
     /**

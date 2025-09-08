@@ -20,6 +20,14 @@ public class Event extends Task {
 
     public Event(String description, String startTime, String endTime) {
         super(description, TaskType.EVENT);
+
+        assert description != null : "Event description cannot be null";
+        assert !description.trim().isEmpty() : "Event description cannot be empty";
+        assert startTime != null : "Event start time cannot be null";
+        assert !startTime.trim().isEmpty() : "Event start time cannot be empty";
+        assert endTime != null : "Event end time cannot be null";
+        assert !endTime.trim().isEmpty() : "Event end time cannot be empty";
+
         this.startTime = startTime;
         this.endTime = endTime;
         this.fromDateTime = parseDateTime(startTime);
@@ -27,10 +35,14 @@ public class Event extends Task {
     }
 
     public String getStartTime() {
+        assert startTime != null : "startTime field should not be null when accessed";
+        assert !startTime.trim().isEmpty() : "startTime field should not be empty when accessed";
         return startTime;
     }
 
     public String getEndTime() {
+        assert endTime != null : "endTime field should not be null when accessed";
+        assert !endTime.trim().isEmpty() : "endTime field should not be empty when accessed";
         return endTime;
     }
 
@@ -87,6 +99,11 @@ public class Event extends Task {
 
     @Override
     public String toString() {
+        assert startTime != null : "startTime should not be null in toString()";
+        assert !startTime.trim().isEmpty() : "startTime should not be empty in toString()";
+        assert endTime != null : "endTime should not be null in toString()";
+        assert !endTime.trim().isEmpty() : "endTime should not be empty in toString()";
+
         String fromFormatted = startTime;
         String toFormatted = endTime;
 
