@@ -113,7 +113,6 @@ public class Storage {
             default:
                 return null; // Unknown task type
         }
-
         if (task != null) {
             task.setDone(isDone);
         }
@@ -137,7 +136,6 @@ public class Storage {
             Event event = (Event) task;
             return "E | " + doneStatus + " | " + task.getDescription() + " | " + event.getStartTime() + "-" + event.getEndTime();
         }
-
         return ""; // Should not reach here
     }
 }

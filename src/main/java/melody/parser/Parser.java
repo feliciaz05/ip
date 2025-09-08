@@ -140,7 +140,6 @@ public class Parser {
             if (toTime.isEmpty()) {
                 throw new MelodyException("The end time of an event cannot be empty");
             }
-
             return new String[]{desc, fromTime, toTime};
         } catch (StringIndexOutOfBoundsException e) {
             throw new MelodyException("Invalid event format. Try: 'event <task> /from <start> /to <end>'");
