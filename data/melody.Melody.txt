@@ -1,2 +1,3 @@
 D | 1 | hw | 5-05
 T | 0 | eat
+T | 1 | sleep

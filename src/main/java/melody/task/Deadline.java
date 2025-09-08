@@ -18,6 +18,12 @@ public class Deadline extends Task {
 
     public Deadline(String description, String by) {
         super(description, TaskType.DEADLINE);
+
+        assert by != null : "Deadline 'by' parameter cannot be null";
+        assert !by.trim().isEmpty() : "Deadline 'by' parameter cannot be empty";
+        assert description != null : "Description cannot be null";
+        assert !description.trim().isEmpty() : "Description cannot be empty";
+
         this.by = by;
         this.byDateTime = parseDateTime(by);
     }
@@ -27,6 +33,9 @@ public class Deadline extends Task {
     }
 
     private LocalDateTime parseDateTime(String dateTimeString) {
+        assert dateTimeString != null : "DateTime string cannot be null";
+        assert !dateTimeString.trim().isEmpty() : "DateTime string cannot be empty";
+
         String[] formats = {
                 "yyyy-MM-dd HHmm",    // 2019-12-01 1800 (most specific)
                 "dd/MM/yyyy HHmm",    // 01/12/2019 1800
