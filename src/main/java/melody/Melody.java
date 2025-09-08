@@ -38,11 +38,9 @@ public class Melody {
         String input;
 
         while (true) {
-
             try {
                 input = ui.readCommand();
                 handleCommand(input);
-
             } catch (MelodyException e) {
                 ui.showError(e.getMessage());
             } catch (Exception e) {
@@ -136,7 +134,6 @@ public class Melody {
         tasks.addTask(newDeadline);
         ui.showTaskAdded(newDeadline, tasks.size());
         saveTasksToFile();
-
     }
 
     private static void addTodo(String description) {
@@ -144,7 +141,6 @@ public class Melody {
         tasks.addTask(newTodo);
         ui.showTaskAdded(newTodo, tasks.size());
         saveTasksToFile();
-
     }
 
     private static void addEvent(String description, String from, String to) {
@@ -152,7 +148,6 @@ public class Melody {
         tasks.addTask(newEvent);
         ui.showTaskAdded(newEvent, tasks.size());
         saveTasksToFile();
-
     }
 
     private static void saveTasksToFile() {
