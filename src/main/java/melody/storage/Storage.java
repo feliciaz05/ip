@@ -14,6 +14,8 @@ public class Storage {
     private String filePath;
 
     public Storage(String filePath) {
+        assert filePath != null : "File path cannot be null";
+        assert !filePath.trim().isEmpty() : "File path cannot be empty";
         this.filePath = filePath;
     }
 
@@ -26,10 +28,15 @@ public class Storage {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
 
+        assert this.filePath.equals(filePath) : "File path should not change";
+
         // If file doesn't exist, return empty list
         if (!file.exists()) {
+            assert tasks.isEmpty() : "Task list should be empty when file doesn't exist";
             return tasks;
         }
+
+        assert file.canRead() : "File should be readable: " + filePath;
 
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
@@ -63,6 +70,7 @@ public class Storage {
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
+            assert parentDir.mkdirs() : "Failed to create parent directories: " + parentDir.getAbsolutePath();
         }
 
         FileWriter writer = new FileWriter(filePath);
@@ -78,7 +86,12 @@ public class Storage {
      * @return melody.task.Task object or null if line is invalid
      */
     private Task parseTaskFromLine(String line) {
+
+        assert line != null : "Line cannot be null";
+        assert !line.trim().isEmpty() : "Line cannot be empty";
+
         String[] parts = line.split("\\|");
+        assert parts.length >= 3 : "Line should have at least 3 parts: " + line;
         if (parts.length < 3) {
             return null; // Invalid format
         }
@@ -90,12 +103,14 @@ public class Storage {
 
         switch (taskType) {
             case "T":
+                assert parts.length >= 3 : "Todo should have at least 3 parts";
                 if (parts.length >= 3) {
                     String description = parts[2].trim();
                     task = new Todo(description);
                 }
                 break;
             case "D":
+                assert parts.length >= 4 : "Deadline should have at least 4 parts";
                 if (parts.length >= 4) {
                     String description = parts[2].trim();
                     String by = parts[3].trim();
@@ -103,6 +118,7 @@ public class Storage {
                 }
                 break;
             case "E":
+                assert parts.length >= 5 : "Event should have at least 5 parts";
                 if (parts.length >= 5) {
                     String description = parts[2].trim();
                     String from = parts[3].trim();
@@ -111,10 +127,12 @@ public class Storage {
                 }
                 break;
             default:
+                assert false : "Unknown task type should not reach here: " + taskType;
                 return null; // Unknown task type
         }
         if (task != null) {
             task.setDone(isDone);
+            assert task.isDone() == isDone : "Task done status should match parsed status";
         }
         return task;
     }
@@ -136,6 +154,10 @@ public class Storage {
             Event event = (Event) task;
             return "E | " + doneStatus + " | " + task.getDescription() + " | " + event.getStartTime() + "-" + event.getEndTime();
         }
+<<<<<<< HEAD
+=======
+        assert false;
+>>>>>>> master
         return ""; // Should not reach here
     }
 }

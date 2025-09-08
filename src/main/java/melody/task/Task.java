@@ -17,6 +17,10 @@ public abstract class Task {
      * @param type
      */
     public Task(String description, TaskType type) {
+        assert description != null : "Task description cannot be null";
+        assert !description.trim().isEmpty() : "Task description cannot be empty";
+        assert type != null : "Task type cannot be null";
+
         this.description = description;
         this.type = type;
         this.isDone = false;
@@ -28,7 +32,12 @@ public abstract class Task {
      * @return X if the task was successfully marked as done, otherwise
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        String icon = (isDone ? "X" : " "); // mark done task with X
+        assert icon != null : "Status icon should not be null";
+        assert icon.length() == 1 : "Status icon should be exactly 1 character";
+        assert (isDone && icon.equals("X")) || (!isDone && icon.equals(" ")) :
+                "Status icon should match done state";
+        return icon;
     }
 
     /**
