@@ -86,6 +86,26 @@ public class TaskList {
     }
 
     /**
+     * Updates a specific field of a task.
+     *
+     * @param oneBasedIndex The index of the task to update (1-based)
+     * @param field The field to update (e.g., "from", "to", "by", "description")
+     * @param newValue The new value for the field
+     * @return A confirmation message
+     * @throws MelodyException If the index is invalid or the field cannot be updated
+     */
+    public String updateTask(int oneBasedIndex, String field, String newValue) throws MelodyException {
+        if (oneBasedIndex < 1 || oneBasedIndex > tasks.size()) {
+            throw new MelodyException("Task number " + oneBasedIndex + " doesn't exist.");
+        }
+
+        Task taskToUpdate = tasks.get(oneBasedIndex - 1);
+        String confirmation = taskToUpdate.updateField(field, newValue);
+
+        return "Nice! I've updated this task:\n  " + taskToUpdate + "\n" + confirmation;
+    }
+
+    /**
      * Returns the number of tasks in the list.
      *
      * @return the size of the task list

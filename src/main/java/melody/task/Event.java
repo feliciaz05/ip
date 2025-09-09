@@ -1,5 +1,7 @@
 package melody.task;
 
+import melody.exception.MelodyException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -96,6 +98,30 @@ public class Event extends Task {
         return null;
     }
 
+    @Override
+    public String getAvailableUpdateFields() {
+        return "Available fields for events: /description, /from, /to";
+    }
+
+    @Override
+    public String updateField(String field, String newValue) throws MelodyException {
+        switch (field) {
+            case "from":
+                this.startTime = newValue;
+                this.fromDateTime = parseDateTime(newValue);
+                return "Changed 'from' time to: " + newValue;
+            case "to":
+                this.endTime = newValue;
+                this.toDateTime = parseDateTime(newValue);
+                return "Changed 'to' time to: " + newValue;
+            case "description":
+                this.setDescription(newValue);
+                return "Changed description to: " + newValue;
+            default:
+                throw new MelodyException("Cannot update field '" + field +
+                        "' for an event.\n" + getAvailableUpdateFields());
+        }
+    }
 
     @Override
     public String toString() {

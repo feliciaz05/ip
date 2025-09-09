@@ -55,7 +55,7 @@ public class Melody {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
-        return "Duke heard: " + input;
+        return "Melody heard: " + input;
     }
 
     private static void handleCommand(String input) throws MelodyException {
@@ -106,6 +106,20 @@ public class Melody {
                 Task removedTask = tasks.removeTask(deleteTaskNumber);
                 ui.showTaskRemoved(removedTask, tasks.size());
                 saveTasksToFile();
+                break;
+
+            case UPDATE:
+                try {
+                    String[] updateArgs = Parser.parseUpdate(input);
+                    int taskNumber = Integer.parseInt(updateArgs[0]);
+                    String field = updateArgs[1];
+                    String newValue = updateArgs[2];
+
+                    String result = tasks.updateTask(taskNumber, field, newValue);
+                    ui.showMessage(result);
+                } catch (MelodyException e) {
+                    ui.showError(e.getMessage());
+                }
                 break;
         }
     }
