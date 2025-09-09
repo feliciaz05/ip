@@ -33,8 +33,10 @@ public class Parser {
             return CommandType.DELETE;
         } else if (input.startsWith("find ")) {
             return CommandType.FIND;
+        } else if (input.startsWith("update ")) {
+            return CommandType.UPDATE;
         } else {
-            throw new MelodyException("I don't understand that command. Try: todo, deadline, event, list, mark, unmark, delete, or bye!");
+            throw new MelodyException("I don't understand that command. Try: todo, deadline, event, list, mark, unmark, delete, update or bye!");
         }
     }
 
@@ -175,6 +177,63 @@ public class Parser {
         String keyword = input.substring(5).trim();
         assert !keyword.isEmpty() : "Search keyword should not be empty";
         return keyword;
+    }
+
+    /**
+     * Parses an update command and extracts the task number, field to update, and new value.
+     * Format: update [task number] /[field] [new value]
+     * Example: update 3 /from 14:00
+     *
+     * @param input The user input string
+     * @return A String array containing [taskNumber, field, newValue]
+     * @throws MelodyException If the format is invalid
+     */
+    public static String[] parseUpdate(String input) throws MelodyException {
+        assert input.startsWith("update ") : "Input must start with 'update '";
+
+        // Remove the "update " part and split the remaining string by spaces
+        String args = input.substring(7).trim();
+        if (args.isEmpty()) {
+            throw new MelodyException("Please specify a task number, field, and new value.\n" +
+                    "Format: update [number] /[field] [new value]\n" +
+                    "Example: update 3 /from 14:00");
+        }
+
+        // Split into parts: [number, /field, value...]
+        String[] parts = args.split("\\s+", 3); // Split into max 3 parts
+        if (parts.length < 3) {
+            throw new MelodyException("Invalid update format.\n" +
+                    "Format: update [number] /[field] [new value]\n" +
+                    "Example: update 3 /from 14:00");
+        }
+
+        try {
+            // Validate task number
+            int taskNumber = Integer.parseInt(parts[0]);
+            if (taskNumber < 1) {
+                throw new MelodyException("Task number must be a positive integer.");
+            }
+
+            // Validate field format (should start with '/')
+            String field = parts[1];
+            if (!field.startsWith("/")) {
+                throw new MelodyException("Field must start with '/'.\n" +
+                        "Available fields: /description, /from, /to, /by");
+            }
+            // Remove the leading '/' to get the field name
+            String fieldName = field.substring(1);
+
+            // The rest is the new value
+            String newValue = parts[2].trim();
+            if (newValue.isEmpty()) {
+                throw new MelodyException("The new value cannot be empty.");
+            }
+
+            return new String[]{parts[0], fieldName, newValue};
+
+        } catch (NumberFormatException e) {
+            throw new MelodyException("Please provide a valid task number.");
+        }
     }
 
 }

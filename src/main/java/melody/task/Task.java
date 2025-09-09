@@ -1,5 +1,7 @@
 package melody.task;
 
+import melody.exception.MelodyException;
+
 /**
  * Represents a task with a description, completion status and type.
  * Provides methods to manage task state and getters and setters.
@@ -60,6 +62,19 @@ public abstract class Task {
     public String getDescription() {
         return description;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Returns the list of fields that can be updated for this task type.
+     *
+     * @return A string describing the available fields
+     */
+    public abstract String getAvailableUpdateFields();
+
+    public abstract String updateField(String field, String newValue) throws MelodyException;
 
     @Override
     public String toString() {

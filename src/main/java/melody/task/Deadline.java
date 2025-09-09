@@ -1,5 +1,7 @@
 package melody.task;
 
+import melody.exception.MelodyException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -74,6 +76,25 @@ public class Deadline extends Task {
         }
 
         return null;
+    }
+
+    @Override
+    public String getAvailableUpdateFields() {
+        return "Available fields for deadlines: /description, /by";
+    }
+
+    @Override
+    public String updateField(String field, String newValue) throws MelodyException {
+        if ("by".equals(field)) {
+            this.by = newValue;
+            return "Changed 'by' time to: " + newValue;
+        } else if ("description".equals(field)) {
+            this.setDescription(newValue);
+            return "Changed description to: " + newValue;
+        } else {
+            throw new MelodyException("Cannot update field '" + field +
+                    "' for a deadline.\n" + getAvailableUpdateFields());
+        }
     }
 
     @Override
