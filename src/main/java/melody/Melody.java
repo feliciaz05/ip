@@ -20,6 +20,7 @@ public class Melody {
     private static TaskList tasks = new TaskList();
     private static Storage storage = new Storage("./data/melody.Melody.txt");
     private static Ui ui = new Ui();
+    private String commandType;
 
     public static void main(String[] args) {
         ui.showWelcome();
@@ -49,11 +50,92 @@ public class Melody {
         }
     }
 
-    /**
-     * Generates a response for the user's chat message.
-     */
     public String getResponse(String input) {
-        return "Melody heard: " + input;
+        try {
+            CommandType cmdType = Parser.parseCommand(input);
+            commandType = cmdType.toString(); // Store the command type
+
+            // Handle the command and return appropriate response
+            switch (cmdType) {
+                case BYE:
+                    return "byeee~ cya next time!";
+
+                case LIST:
+                    return tasks.getTasksAsString();
+
+                case MARK:
+                    int markTaskNumber = Parser.parseTaskNumber(input);
+                    tasks.markTask(markTaskNumber, true);
+                    Task markedTask = tasks.getTask(markTaskNumber);
+                    saveTasksToFile();
+                    return "okie! good jobbb! i've marked this task as done:\n  " + markedTask.toString();
+
+                case UNMARK:
+                    int unmarkTaskNumber = Parser.parseTaskNumber(input);
+                    tasks.markTask(unmarkTaskNumber, false);
+                    Task unmarkedTask = tasks.getTask(unmarkTaskNumber);
+                    saveTasksToFile();
+                    return "okk, i've marked this task as not done yet:\n  " + unmarkedTask.toString();
+
+                case TODO:
+                    String todoDesc = Parser.parseTodo(input);
+                    Todo newTodo = new Todo(todoDesc);
+                    tasks.addTask(newTodo);
+                    saveTasksToFile();
+                    return "alrighty i've added this task:\n  " + newTodo.toString() +
+                            "\nNow you have " + tasks.size() + " tasks in the list hehe";
+
+                case DEADLINE:
+                    String[] deadlineParts = Parser.parseDeadline(input);
+                    Deadline newDeadline = new Deadline(deadlineParts[0], deadlineParts[1]);
+                    tasks.addTask(newDeadline);
+                    saveTasksToFile();
+                    return "alrighty i've added this task:\n  " + newDeadline.toString() +
+                            "\nNow you have " + tasks.size() + " tasks in the list hehe";
+
+                case EVENT:
+                    String[] eventParts = Parser.parseEvent(input);
+                    Event newEvent = new Event(eventParts[0], eventParts[1], eventParts[2]);
+                    tasks.addTask(newEvent);
+                    saveTasksToFile();
+                    return "alrighty i've added this task:\n  " + newEvent.toString() +
+                            "\nNow you have " + tasks.size() + " tasks in the list hehe";
+
+                case FIND:
+                    String keyword = Parser.parseFind(input);
+                    ArrayList<Task> tasksFound = tasks.findTasks(keyword);
+                    if (tasksFound.isEmpty()) {
+                        return "No matching tasks found.";
+                    } else {
+                        StringBuilder result = new StringBuilder("here are the matching tasks in your list:\n");
+                        for (int i = 0; i < tasksFound.size(); i++) {
+                            result.append((i + 1)).append(". ").append(tasksFound.get(i).toString()).append("\n");
+                        }
+                        return result.toString();
+                    }
+
+                case DELETE:
+                    int deleteTaskNumber = Parser.parseTaskNumber(input);
+                    Task removedTask = tasks.removeTask(deleteTaskNumber);
+                    saveTasksToFile();
+                    return "got it! i've removed this task:\n  " + removedTask.toString() +
+                            "\nNow you have " + tasks.size() + " tasks in the list.";
+
+                case UPDATE:
+                    String[] updateArgs = Parser.parseUpdate(input);
+                    int taskNumber = Integer.parseInt(updateArgs[0]);
+                    String field = updateArgs[1];
+                    String newValue = updateArgs[2];
+                    String result = tasks.updateTask(taskNumber, field, newValue);
+                    saveTasksToFile();
+                    return result;
+
+                default:
+                    return "I don't understand that command :(";
+            }
+        } catch (MelodyException e) {
+            return "Error: " + e.getMessage();
+        }
     }
 
     private static void handleCommand(String input) throws MelodyException {
@@ -161,6 +243,10 @@ public class Melody {
     private static void findTasks(String keyword) {
         ArrayList<Task> tasksFound = tasks.findTasks(keyword);
         ui.showTasksFound(tasksFound);
+    }
+
+    public String getCommandType() {
+        return commandType;
     }
 
 }
