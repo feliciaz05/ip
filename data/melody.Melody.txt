@@ -1,4 +1,2 @@
-D | 1 | hw | 5-05
 T | 0 | eat
-T | 1 | sleep
-E | 0 | presentation | 12pm-2pm
+E | 0 | house event | 9 jan-10 jan
