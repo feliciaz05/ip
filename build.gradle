@@ -14,19 +14,12 @@ dependencies {
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
 
     String javaFxVersion = '17.0.7'
-
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'linux'
     implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'linux'
     implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'linux'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'linux'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
 }
 
 test {
@@ -47,14 +40,34 @@ application {
     mainClass.set("Launcher")
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls,javafx.fxml'
+    ]
+}
+
 shadowJar {
     archiveBaseName = "melody"
     archiveClassifier = null
+    archiveVersion = "0.2"
     archiveFileName = "melody.jar"
+
+    mergeServiceFiles()
+
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/*.SF'
 }
 
 run{
     standardInput = System.in
+    doFirst {
+        jvmArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'javafx.controls,javafx.fxml'
+        ]
+    }
 }
 
 jar {
