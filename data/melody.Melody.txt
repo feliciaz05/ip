@@ -1,2 +1,2 @@
-T | 0 | eat
-E | 0 | house event | 9 jan-10 jan
+T | 0 | homework
+E | 1 | meeting | 9pm-11pm
