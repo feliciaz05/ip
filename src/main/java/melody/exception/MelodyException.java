@@ -12,6 +12,6 @@ public class MelodyException extends Exception{
      * @param message the detail message explaining the error
      */
     public MelodyException(String message) {
-        super("  ERROR: " + message);
+        super("  :c oopsies! " + message);
     }
 }

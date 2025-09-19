@@ -23,7 +23,7 @@ Melody is a friendly chatbot that helps you manage your tasks efficiently throug
 1. Ensure you have Java 17 or later installed
 2. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/melody-bot.git
+   git clone https://github.com/feliciaz05/melody-bot.git
    ```
 3. Navigate to the project directory:
    ```bash
@@ -70,16 +70,6 @@ mark 1
 delete 2
 ```
 
-### Finding tasks
-```
-find book
-```
-
-### Getting help
-```
-help
-```
-
 ## Command Summary
 
 | Command | Format | Example |
@@ -90,44 +80,40 @@ help
 | List | `list` | `list` |
 | Mark | `mark INDEX` | `mark 1` |
 | Delete | `delete INDEX` | `delete 2` |
-| Find | `find KEYWORD` | `find book` |
-| Help | `help` | `help` |
 
 ## File Structure
 
 ```
-melody-bot/
+ip/
 ├── src/
-│   └── melody/
-│       ├── command/
-│       │   ├── AddCommand.java
-│       │   ├── DeleteCommand.java
-│       │   ├── ListCommand.java
-│       │   └── ...
-│       ├── exception/
-│       │   └── MelodyException.java
-│       ├── parser/
-│       │   └── Parser.java
-│       ├── storage/
-│       │   └── Storage.java
-│       ├── task/
-│       │   ├── Task.java
-│       │   ├── Todo.java
-│       │   ├── Deadline.java
-│       │   └── Event.java
-│       ├── ui/
-│       │   ├── DialogBox.java
-│       │   ├── Launcher.java
-│       │   ├── Main.java
-│       │   └── MainWindow.java
-│       └── Melody.java
-├── docs/
-│   └── README.md
-├── data/
-│   └── tasks.txt
-└── images/
-    ├── DaUser.png
-    └── MelodyAI.png
+│   └── main/
+│       └── java/
+│           └── melody/
+│               ├── command/
+│               │   ├── CommandType.java
+│               │   └── (other command classes)
+│               ├── exception/
+│               │   └── MelodyException.java
+│               ├── parser/
+│               │   └── Parser.java
+│               ├── storage/
+│               │   └── Storage.java
+│               ├── task/
+│               │   ├── Deadline.java
+│               │   ├── Event.java
+│               │   ├── Task.java
+│               │   ├── TaskList.java
+│               │   ├── TaskType.java
+│               │   └── Todo.java
+│               ├── ui/
+│               │   ├── DialogBox.java
+│               │   ├── Launcher.java
+│               │   ├── Main.java
+│               │   ├── MainWindow.java
+│               │   └── Ui.java
+│               └── Melody.java
+└── docs/
+    └── README.md
 ```
 
 ## Contributing

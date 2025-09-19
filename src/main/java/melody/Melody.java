@@ -1,5 +1,8 @@
 package melody;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
+import javafx.util.Duration;
 import melody.command.CommandType;
 import melody.exception.MelodyException;
 import melody.parser.Parser;
@@ -58,7 +61,12 @@ public class Melody {
             // Handle the command and return appropriate response
             switch (cmdType) {
                 case BYE:
+
+                    PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                    delay.setOnFinished(e -> Platform.exit());
+                    delay.play();
                     return "byeee~ cya next time!";
+
 
                 case LIST:
                     return tasks.getTasksAsString();
@@ -134,7 +142,7 @@ public class Melody {
                     return "I don't understand that command :(";
             }
         } catch (MelodyException e) {
-            return "Error: " + e.getMessage();
+            return e.getMessage();
         }
     }
 
