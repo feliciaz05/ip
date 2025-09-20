@@ -3,6 +3,7 @@ plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'checkstyle'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 repositories {
@@ -12,14 +13,12 @@ repositories {
 dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
-
-    String javaFxVersion = '17.0.7'
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
-
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+}
+
+javafx {
+    version = "17.0.7"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.base' ]
 }
 
 test {
@@ -40,13 +39,6 @@ application {
     mainClass.set("Launcher")
 }
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs += [
-            '--module-path', classpath.asPath,
-            '--add-modules', 'javafx.controls,javafx.fxml'
-    ]
-}
-
 shadowJar {
     archiveBaseName = "melody"
     archiveClassifier = null
@@ -58,16 +50,6 @@ shadowJar {
     exclude 'META-INF/*.DSA'
     exclude 'META-INF/*.RSA'
     exclude 'META-INF/*.SF'
-}
-
-run{
-    standardInput = System.in
-    doFirst {
-        jvmArgs = [
-                '--module-path', classpath.asPath,
-                '--add-modules', 'javafx.controls,javafx.fxml'
-        ]
-    }
 }
 
 jar {
